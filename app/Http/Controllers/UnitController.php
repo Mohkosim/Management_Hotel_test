@@ -44,8 +44,8 @@ class UnitController extends Controller
 
         HouseKeeping::create([
             'unit_id' => $unit->id,
-            'current_condition' => 'clean',
-            'current_status' => 'free',
+            'current_condition' => 'Clean',
+            'current_status' => 'Free',
         ]);
 
         Inventory::create([

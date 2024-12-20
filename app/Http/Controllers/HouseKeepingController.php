@@ -7,13 +7,15 @@ use App\Models\Reservation;
 use App\Models\Inventory;
 use App\Models\Unit;
 use App\Models\UnitGroup;
+use App\Models\HouseKeeping;
 
 class HouseKeepingController extends Controller
 {
 
     public function index()
     {
-        $inventories = Inventory::with('unit')->get();
+        $housekeepings = HouseKeeping::all();
+        $inventories = Inventory::with('unit', 'unitgroup')->get();
 
         // Menghitung status unit
         // $dirtyUnits = Unit::where('status', 'dirty')->count();
@@ -25,24 +27,26 @@ class HouseKeepingController extends Controller
         // Mengirim data ke tampilan
         return view('housekeeping.index', [
             'title' => 'Housekeeping',
-            'inventories' => $inventories
+            'inventories' => $inventories,
+            'housekeepings' => $housekeepings
         ]);
-
     }
 
     public function updateStatus(Request $request, $id)
     {
-        $unit = Unit::findOrFail($id);
+        $housekeeping = HouseKeeping::findOrFail($id);
 
         $request->validate([
-            'status' => 'required|in:clean,clean_to_be_inspected,dirty'
+            'status' => 'required|in:clean,Inspect,dirty'
         ]);
 
-        $unit->status = $request->input('status');
-        $unit->save();
+        // Update status berdasarkan input dari form
+        $housekeeping->current_condition = $request->input('status');
+        $housekeeping->save();
 
         return redirect()->route('housekeeping.index')->with('success', 'Status kamar berhasil diperbarui.');
     }
+
 
     public function getUnitData()
     {

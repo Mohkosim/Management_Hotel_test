@@ -17,7 +17,7 @@ return new class extends Migration
                 table: 'units',
                 indexName: 'housekeepings_units_id'
             )->onDelete('cascade');
-            $table->enum('current_condition', ['clean', 'dirty', 'mark']);
+            $table->enum('current_condition', ['clean','Inspect', 'dirty']);
             $table->string('current_status');
             $table->timestamps();
         });

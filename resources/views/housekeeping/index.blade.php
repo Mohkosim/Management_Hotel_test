@@ -156,7 +156,6 @@
                         <th scope="col" class="px-6 py-3">Unit Group</th>
                         <th scope="col" class="px-6 py-3 text-center">Current Condition</th>
                         <th scope="col" class="px-6 py-3">Current Status</th>
-                        <th scope="col" class="px-6 py-3 text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -167,66 +166,78 @@
                         </th>
                         <td class="px-6 py-4">{{ $inventory->unitgroup->type }}</td>
                         <td class="px-6 py-4 text-center">
+                            @php
+                            $currentCondition = $housekeepings->where('unit_id', $inventory->unit_id)->first();
+                            @endphp
+
+                            @if ($currentCondition)
+                            @if ($currentCondition->current_condition == 'clean')
                             <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
                             </svg>
-                            Marks as Clean
+
+                            @elseif ($currentCondition->current_condition == 'dirty')
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.133 12.632v-1.8a5.407 5.407 0 0 0-4.154-5.262.955.955 0 0 0 .021-.106V3.1a1 1 0 0 0-2 0v2.364a.933.933 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C6.867 15.018 5 15.614 5 16.807 5 17.4 5 18 5.538 18h12.924C19 18 19 17.4 19 16.807c0-1.193-1.867-1.789-1.867-4.175Zm-13.267-.8a1 1 0 0 1-1-1 9.424 9.424 0 0 1 2.517-6.391A1.001 1.001 0 1 1 6.854 5.8a7.43 7.43 0 0 0-1.988 5.037 1 1 0 0 1-1 .995Zm16.268 0a1 1 0 0 1-1-1A7.431 7.431 0 0 0 17.146 5.8a1 1 0 0 1 1.471-1.354 9.424 9.424 0 0 1 2.517 6.391 1 1 0 0 1-1 .995ZM8.823 19a3.453 3.453 0 0 0 6.354 0H8.823Z" />
+                            </svg>
+
+                            @elseif ($currentCondition->current_condition == 'Inspect')
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z" />
+                            </svg>
+                            @else
+                            <svg class="w-6 h-6 text-gray-500 mx-auto" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                            </svg>
+                            @endif
+                            {{ $currentCondition->current_condition }}
+                            @else
+                            No Condition
+                            @endif
                         </td>
-                        <td class="px-6 py-4">Free</td>
-                        <td class="px-6 py-4 text-center">
-                            <div class="relative">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white mx-auto cursor-pointer" onclick="toggleMenu(event)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01" />
+                        <td class="px-6 py-4">
+                            {{ $currentCondition ? $currentCondition->current_status : 'No Condition' }}
+                        </td>
+                        <td class="px-4 py-3 flex items-center">
+                            <button id="{{ $currentCondition ? $currentCondition->id : 'default-dropdown-button' }}-dropdown-button" data-dropdown-toggle="{{ $currentCondition ? $currentCondition->id : 'default-dropdown' }}" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded">
+                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                 </svg>
-                                <div class="absolute hidden mt-2 left-0 w-48 bg-white border border-gray-300 rounded shadow-lg z-10">
-                                    <div class="p-2 text-gray-800 hover:bg-gray-100 cursor-pointer" onclick="markAsClean()">
-                                        <span class="flex items-center">
-                                            <svg class="w-4 h-4 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M10 15l-3-3 1.414-1.414L10 12.586l7.586-7.586L19 7l-9 9z" />
-                                            </svg>
-                                            Marks as Clean
-                                        </span>
-                                    </div>
-                                    <div class="p-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Clean to be Inspected</div>
-                                    <div class="p-2 text-gray-800 hover:bg-gray-100 cursor-pointer" onclick="markAsDirty()">Marks as Dirty</div>
-                                </div>
+                            </button>
+
+                            <div id="{{ $currentCondition ? $currentCondition->id : 'default-dropdown' }}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="{{ $currentCondition ? $currentCondition->id : 'default-dropdown-button' }}">
+                                    <li>
+                                        <form action="{{ route('housekeeping.updateStatus', ['id' => $currentCondition->id]) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="status" value="clean">
+                                            <button type="submit" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Marks as Clean</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('housekeeping.updateStatus', ['id' => $currentCondition->id]) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="status" value="Inspect">
+                                            <button type="submit" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Clean to be Inspected</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('housekeeping.updateStatus', ['id' => $currentCondition->id]) }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="status" value="dirty">
+                                            <button type="submit" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg -gray-600 dark:hover:text-white">Marks as Dirty</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
+
             </table>
         </div>
 
-
-        {{-- untuk button actions ditable --}}
-        <script>
-            function toggleMenu(event) {
-                event.stopPropagation(); // Prevents the click event from bubbling up
-                const dropdown = event.currentTarget.nextElementSibling;
-                const menus = document.querySelectorAll('.absolute');
-
-                // Hide all dropdowns
-                menus.forEach(menu => {
-                    if (menu !== dropdown) {
-                        menu.classList.add('hidden');
-                    }
-                });
-
-                // Toggle the visibility of the clicked dropdown
-                dropdown.classList.toggle('hidden');
-            }
-
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.relative')) {
-                    const menus = document.querySelectorAll('.absolute');
-                    menus.forEach(menu => {
-                        menu.classList.add('hidden');
-                    });
-                }
-            });
-
-        </script>
 
         {{-- pagination --}}
         <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
