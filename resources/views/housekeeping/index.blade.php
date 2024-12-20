@@ -65,15 +65,15 @@
                 </header>
                 <div class="grid grid-cols-3 text-center">
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Departing</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Arriving</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Stay-th</p>
                     </div>
                 </div>
@@ -81,22 +81,21 @@
 
 
             {{-- Occupied --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64">
+            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
                 <header class="flex justify-center mb-4">
-
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Occupied units</span>
                 </header>
-                <div class="grid grid-cols-3 text-center">
+                <div class="grid grid-cols-3 text-center mt-11 ">
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Dirty</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Inspect</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Clean</p>
                     </div>
                 </div>
@@ -104,39 +103,39 @@
             </div>
 
             {{-- Free Units --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64">
+            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
                 <header class="flex justify-center mb-4">
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Free units</span>
                 </header>
-                <div class="grid grid-cols-3 text-center">
+                <div class="grid grid-cols-3 text-center mt-11">
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">{{ $dirtyUnits }}</span>
                         <p class="text-sm text-gray-500">Dirty</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">{{ $inspectUnits }}</span>
                         <p class="text-sm text-gray-500">Inspect</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">{{ $cleanUnits }}</span>
                         <p class="text-sm text-gray-500">Clean</p>
                     </div>
                 </div>
             </div>
 
             {{-- Maintenances --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64">
+            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
                 <header class="flex justify-center mb-4">
 
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Maintenances</span>
                 </header>
-                <div class="grid grid-cols-3 text-center">
+                <div class="grid grid-cols-3 text-center mt-11">
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Out Of Services</p>
                     </div>
                     <div>
-                        <span class="text-3xl font-bold text-gray-900"></span>
+                        <span class="text-3xl font-bold text-gray-900">0</span>
                         <p class="text-sm text-gray-500">Out Of Order Units</p>
                     </div>
                     <div>

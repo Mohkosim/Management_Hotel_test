@@ -18,9 +18,9 @@ class HouseKeepingController extends Controller
         $inventories = Inventory::with('unit', 'unitgroup')->get();
 
         // Menghitung status unit
-        // $dirtyUnits = Unit::where('status', 'dirty')->count();
-        // $inspectUnits = Unit::where('status', 'clean_to_be_inspected')->count();
-        // $cleanUnits = Unit::where('status', 'clean')->count();
+        $dirtyUnits = HouseKeeping::where('current_condition', 'dirty')->count();
+        $inspectUnits = HouseKeeping::where('current_condition', 'Inspect')->count();
+        $cleanUnits = HouseKeeping::where('current_condition', 'clean')->count();
         // $outOfServices = Unit::where('status', 'out_of_service')->count();
         // $outOfOrderUnits = Unit::where('status', 'out_of_order')->count();
 
@@ -28,7 +28,10 @@ class HouseKeepingController extends Controller
         return view('housekeeping.index', [
             'title' => 'Housekeeping',
             'inventories' => $inventories,
-            'housekeepings' => $housekeepings
+            'housekeepings' => $housekeepings,
+            'dirtyUnits' => $dirtyUnits,
+            'inspectUnits' => $inspectUnits,
+            'cleanUnits' => $cleanUnits
         ]);
     }
 
@@ -48,17 +51,17 @@ class HouseKeepingController extends Controller
     }
 
 
-    public function getUnitData()
-    {
-        $units = Unit::all();
-        return response()->json($units);
-    }
+    // public function getUnitData()
+    // {
+    //     $units = Unit::all();
+    //     return response()->json($units);
+    // }
 
-    public function getUnitGroup()
-    {
-        $unitGroups = UnitGroup::all();
-        return response()->json($unitGroups);
-    }
+    // public function getUnitGroup()
+    // {
+    //     $unitGroups = UnitGroup::all();
+    //     return response()->json($unitGroups);
+    // }
 
     public function searchData(Request $request)
     {
