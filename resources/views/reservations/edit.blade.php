@@ -23,7 +23,6 @@
     {{-- Title --}}
     <h3 class="text-3xl font-bold dark:text-white px-4 lg:px-12">Reservations</h3>
 
-    <div>{{$edit}}</div>
     @if ($edit == 1)
     <section class="bg-white dark:bg-gray-900">
         <div class="bg-white border border-gray-200 rounded-lg shadow py-8 px-4 mx-auto max-w-2xl lg:py-16">

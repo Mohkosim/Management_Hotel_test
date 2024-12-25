@@ -23,7 +23,6 @@
     {{-- Title --}}
     <h3 class="text-3xl font-bold dark:text-white px-4 lg:px-12">Reservations</h3>
 
-    <div>{{$step}}</div>
     @if ($step == 1)
     <section class="bg-white dark:bg-gray-900">
         <div class="bg-white border border-gray-200 rounded-lg shadow py-8 px-4 mx-auto max-w-2xl lg:py-16">
@@ -66,8 +65,8 @@
                         <label for="room_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Booking Rooms</label>
                         <select id="room_type" name="inventory_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option selected disabled>Select a room type</option>
-                            @foreach($unitGroups as $unitGroup)
-                            <option value="{{ $unitGroup->id }}">{{ $unitGroup->type }}</option>
+                            @foreach($units as $unit)
+                            <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -202,9 +201,9 @@
                             <td class="border border-gray-300 px-4 py-2">{{ session('step1.departure_date') }}</td>
                         </tr>
                         <tr>
-                            <td class="border border-gray-300 px-4 py-2"><strong>Room Type:</strong></td>
+                            <td class="border border-gray-300 px-4 py-2"><strong>Room Number:</strong></td>
                             <td class="border border-gray-300 px-4 py-2">
-                                {{ optional($unitGroups->firstWhere('id', session('step1.inventory_id')))->type ?? 'Not Selected' }}
+                                {{ optional($units->firstWhere('id', session('step1.inventory_id')))->name ?? 'Not Selected' }}
                             </td>
                         </tr>
                         <tr>

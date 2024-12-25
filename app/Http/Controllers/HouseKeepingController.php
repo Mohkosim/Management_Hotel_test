@@ -66,9 +66,9 @@ class HouseKeepingController extends Controller
     public function searchData(Request $request)
     {
         $keyword = $request->input('keyword');
-        $results = Unit::with('unitGroup')
-            ->where('room_number', 'like', "%$keyword%")
-            ->orWhereHas('unitGroup', function ($query) use ($keyword) {
+        $results = HouseKeeping::with('unitgroup')
+            ->where('type', 'like', "%$keyword%")
+            ->orWhereHas('unit', function ($query) use ($keyword) {
                 $query->where('name', 'like', "%$keyword%");
             })
             ->get();

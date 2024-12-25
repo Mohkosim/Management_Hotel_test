@@ -13,7 +13,7 @@
         .container {
             display: flex;
             justify-content: space-between;
-            margin: 0%;
+            margin: 0;
         }
 
         .column {
@@ -39,6 +39,22 @@
             height: auto;
         }
 
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3f4f6;
+        }
+
     </style>
 </head>
 <body class="bg-gray-200">
@@ -49,62 +65,56 @@
             </div>
             <div class="text-right">
                 <h1 class="text-2xl font-bold">FOLIOS</h1>
-                <p>Folios No: {{ $reservation->invoice_number }}</p>
+                <p>Folios No: <span class="font-normal">{{ $invoiceNumber }}</span></p>
             </div>
         </div>
 
         <div class="mb-8">
-            <p class="font-bold">Ditujuakan Kepada: <span class="font-normal">{{ $reservation->guest->name }}</span></p>
-            <p class="font-bold">Booking Date: <span class="font-normal">{{ $reservation->booking_date }}</span></p>
-            <p class="font-bold">Alamat: <span class="font-normal">{{ $reservation->guest->address }}</span></p>
+            <p class="font-bold">Ditujuakan Kepada: <span class="font-normal">{{ $reservation->booker->guest->name }}</span></p>
+            <p class="font-bold">Booking Date: <span class="font-normal">@foreach ($reservation->booking as $booking)
+                    {{ $booking->booking_date }}<br>
+                    @endforeach</span></p>
+            <p class="font-bold">Alamat: <span class="font-normal">{{ $reservation->booker->guest->address }}</span></p>
         </div>
         <p>Rincian Biaya :</p>
         <table class="w-full mb-8">
             <thead>
-                <tr class="bg-gray-100">
-                    <th class="border px-2 py-2">Number of Rooms</th>
-                    <th class="border px-2 py-2">Tipe Rooms</th>
-                    <th class="border px-2 py-2">Check_In</th>
-                    <th class="border px-2 py-2">Check_Out</th>
-                    <th class="border px-2 py-2">Booking Unit</th>
+                <tr>
+                    <th>Number of Rooms</th>
+                    <th>Tipe Rooms</th>
+                    <th>Check_In</th>
+                    <th>Check_Out</th>
+                    <th>Booking Unit</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="border px-2 py-2">{{ $reservation->rate_plan->inventory->unit->name }}</td>
-                    <td class="border px-2 py-2">{{ $reservation->rate_plan->inventory->unitGroup->type }}</td>
-                    <td class="border px-2 py-2">{{ $reservation->check_in }}</td>
-                    <td class="border px-2 py-2">{{ $reservation->check_out }}</td>
-                    <td class="border px-2 py-2">Rp. {{ $reservation->rate_plan->price }}</td>
+                    <td>{{ $reservation->inventory->unit->name }}</td>
+                    <td>{{ $reservation->inventory->unitGroup->type }}</td>
+                    <td>{{ $reservation->arrival_date }}</td>
+                    <td>{{ $reservation->departure_date }}</td>
+                    <td>Rp. {{ $reservation->inventory->ratePlan->price }}</td>
                 </tr>
-                <tr class="bg-gray-100 font-bold">
-                    <td class="border px-2 py-2" colspan="4">Total Price</td>
-                    <td class="border px-2 py-2">Rp. {{ $reservation->total_harga_room }}</td>
+                <tr class="font-bold">
+                    <td colspan="4">Total Price</td>
+                    <td>Rp. {{ $booking->total_price }}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="text-right">
-            <p class="font-bold">Status Pay: <span class="font-normal">@foreach ($reservation->payments as $payment)
-                    <span>{{ $payment->status }}</span><br>
-                    @endforeach</span></p>
-            <p class="font-bold">Amount: <span class="font-normal">@foreach ($reservation->payments as $payment)
-                    Rp. {{ $payment->amount }} <br>
-                    @if ($payment->returns > 0)
-                    <p class="font-bold">Returns: <span class="font-normal">
-                        <span>Rp. {{ $payment->returns }}</span><br>
-                        </span></p>
-                    @endif
-                    <br>
+            <p class="font-bold">Status Pay: <span class="font-normal">
+                    @foreach ($reservation->booking as $booking)
+                    <span>{{ $booking->payment->amount }}</span><br>
                     @endforeach</span></p>
         </div>
 
         <div>
             <p class="font-bold">Terimakasih</p>
-            <p>{{ $reservation->guest->name }}</p>
-            <p>{{ $reservation->guest->phone }}</p>
-            <p>{{ $reservation->guest->address }}</p>
-            <p>{{ $reservation->guest->email }}</p>
+            <p>{{ $reservation->booker->guest->name }}</p>
+            <p>{{ $reservation->booker->guest->phone }}</p>
+            <p>{{ $reservation->booker->guest->address }}</p>
+            <p>{{ $reservation->booker->guest->email }}</p>
             <br>
         </div>
 
@@ -118,7 +128,7 @@
             <div class="column right">
                 <p>Menyetujui</p>
                 <br><br><br><br>
-                <p><strong><u>{{ $reservation->guest->name }}</u></strong></p>
+                <p><strong><u>{{ $reservation->booker->guest->name }}</u></strong></p>
                 <p><em>Customer</em></p>
             </div>
         </div>

@@ -157,6 +157,7 @@
                         <th scope="col" class="px-6 py-3">Current Status</th>
                     </tr>
                 </thead>
+                @if ($inventories->count())
                 <tbody>
                     @foreach ($inventories as $inventory)
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -280,5 +281,19 @@
                 </li>
             </ul>
         </nav>
+        @else
+        <div class="mx-auto grid max-w-lg justify-items-center text-center">
+            <div class="mb-4 rounded-full bg-gray-100 p-3 dark:bg-gray-500/20">
+                <svg class="h-6 w-6 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+
+            <h4 class="text-base font-semibold leading-6 text-gray-950 dark:text-white">
+                No reservations
+            </h4>
+        </div>
+        @endif
+
     </section>
 </x-layout>

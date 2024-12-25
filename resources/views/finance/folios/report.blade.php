@@ -37,7 +37,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>Invoice Number</th>
                     <th>Guest</th>
                     <th>Rate Plan</th>
                     <th>Check-in</th>
@@ -46,29 +45,40 @@
                     <th>Total Harga Room</th>
                     <th>Status</th>
                     <th>Amount</th>
-                    <th>Returns</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($reservations as $reservation)
                 <tr>
-                    <td>{{ $reservation->invoice_number }}</td>
-                    <td>{{ $reservation->guest->name }}</td>
-                    <td>{{ $reservation->rate_plan->inventory->unit->name }}</td>
-                    <td>{{ $reservation->check_in }}</td>
-                    <td>{{ $reservation->check_out }}</td>
-                    <td>{{ $reservation->booking_date }}</td>
-                    <td>{{ $reservation->total_harga_room }}</td>
+                    <td>{{ $reservation->booker->guest->name }}</td>
+                    <td>{{ $reservation->inventory->unit->name }}</td>
+                    <td>{{ $reservation->arrival_date }}</td>
+                    <td>{{ $reservation->departure_date }}</td>
+                    <td>@foreach ($reservation->booking as $booking)
+                        {{ $booking->booking_date }}<br>
+                        @endforeach</span></p></td>
+                    <td>Rp. {{ $booking->total_price }}</td>
                     @php
-                        $payment = $reservation->payment;
-                    @endphp
-                    @if($payment)
-                        <td>{{ $payment->status }}</td>
-                        <td>{{ $payment->amount }}</td>
-                        <td>{{ $payment->returns }}</td>
-                    @else
-                        <td colspan="3">No Payment Data</td>
-                    @endif
+                    $paymentExists = false;
+                    $paymentStatus = '';
+                    $paymentAmount = 0;
+
+                    foreach ($reservation->booking as $booking) {
+                        if ($booking->payment) {
+                            $paymentExists = true;
+                            $paymentStatus = $booking->payment->status;
+                            $paymentAmount = $booking->payment->amount;
+                            break;
+                        }
+                    }
+                @endphp
+
+                @if($paymentExists)
+                    <td>{{ $paymentStatus }}</td>
+                    <td>{{ $paymentAmount }}</td>
+                @else
+                    <td colspan="3">No Payment Data</td>
+                @endif
                 </tr>
                 @endforeach
             </tbody>

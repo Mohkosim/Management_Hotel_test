@@ -42,6 +42,8 @@ Route::post('/reservations/step3', [ReservationController::class, 'postStep3'])-
 Route::post('/reservations/step4', [ReservationController::class, 'postStep4'])->name('reservations.postStep4');
 
 
+Route::post('/payments/store', [PaymentController::class, 'store'])->name('payments.store');
+
 
 // Housekeeping
 // Route::get('/housekeeping', function () {
@@ -58,13 +60,13 @@ Route::get('/housekeeping/search', [HouseKeepingController::class, 'searchData']
 Route::resource('/sales/rate-plans', RatePlanController::class);
 
 // Finance
-// Route::resource('/finance/document_invoice', PaymentController::class);
-// Route::resource('/finance/invoice_folios', Invoice_FoliosController::class);
+Route::prefix('finance')->group(function () {
+    Route::get('/invoice', [Invoice_FoliosController::class, 'indexInvoice']);
+    Route::get('/folios', [Invoice_FoliosController::class, 'indexFolios']);
 
-Route::get('/finance/invoice', [Invoice_FoliosController::class, 'indexInvoice']);
-Route::get('/finance/folios/report', [Invoice_FoliosController::class, 'generatePDFReport']);
-Route::get('/finance/invoice/pdf/{id}', [Invoice_FoliosController::class, 'generatePdfinvoice']);
-Route::get('/finance/folios/pdf/{id}', [Invoice_FoliosController::class, 'generatePdffolios']);
-
+    Route::get('/folios/report', [Invoice_FoliosController::class, 'generatePDFReport']);
+    Route::get('/invoice/pdf/{id}', [Invoice_FoliosController::class, 'generatePdfinvoice']);
+    Route::get('/folios/pdf/{id}', [Invoice_FoliosController::class, 'generatePdffolios']);
+});
 
 // General Manager

@@ -13,7 +13,7 @@ class UnitGroupController extends Controller
      */
     public function index()
     {
-        return view('rooms.unit-groups.index', ['title' => 'Unit Groups', 'unitGroups' => UnitGroup::all()]);
+        return view('rooms.unit-groups.index', ['title' => 'Unit Groups', 'unitGroups' => UnitGroup::latest()->filter(request(['search']))->paginate(10)]);
     }
 
     /**

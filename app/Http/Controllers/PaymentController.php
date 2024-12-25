@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Models\Reservation;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -13,7 +14,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        // 
+        //
     }
 
     /**
@@ -31,34 +32,22 @@ class PaymentController extends Controller
     {
         // Validasi input
         $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
             'amount' => 'required|numeric',
         ]);
 
-        $reservationId = $request->input('reservation_id');
-        $amountPaid = (float) $request->input('amount');
+        $bookingId = $request->input('booking_id');
+        $amountPaid = $request->input('amount');
 
-        // Hitung total harga reservasi
-        $reservation = Reservation::findOrFail($reservationId);
-        $totalAmountDue = $reservation->total_harga_room;
-        $totalAmountPaid = $reservation->payments()->sum('amount');
-
-        // Hitung pengembalian jika ada
-        $returns = 0;
-        if ($amountPaid > $totalAmountDue - $totalAmountPaid) {
-            $returns = $amountPaid - ($totalAmountDue - $totalAmountPaid);
-            $amountPaid = $totalAmountDue - $totalAmountPaid;
-        }
 
         // Simpan pembayaran
         $payment = new Payment();
-        $payment->reservation_id = $reservationId;
+        $payment->booking_id = $bookingId;
         $payment->amount = $amountPaid;
-        $payment->returns = $returns;
         $payment->save();
 
         // Redirect ke halaman reservasi dengan pesan sukses
-        return redirect()->route('reservations.show', $reservationId)->with('success', 'Payment created successfully.');
-
+        return redirect()->route('reservations.show', $bookingId)->with('success', 'Payment created successfully.');
     }
 
     /**

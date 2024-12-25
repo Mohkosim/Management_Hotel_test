@@ -43,7 +43,7 @@ class Reservation extends Model
         return $this->belongsTo(Inventory::class);
     }
 
-    public function bookings()
+    public function booking()
     {
         return $this->hasMany(Booking::class);
     }

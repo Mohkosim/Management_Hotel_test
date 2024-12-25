@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use App\Models\Inventory;
 use App\Models\Reservation;
+use App\Models\Unit;
 use App\Models\UnitGroup;
 use App\Models\Booker;
 use App\Models\Booking;
@@ -19,7 +20,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservations = Reservation::with('booker.guest', 'bookings')->latest()->filter(request(['search']))->paginate(10);
+        $reservations = Reservation::with('booker.guest', 'booking')->latest()->filter(request(['search']))->paginate(10);
 
         return view('reservations.index', [
             'title' => 'Reservations',
@@ -40,14 +41,14 @@ class ReservationController extends Controller
         );
 
         $guests = Guest::all();
-        $unitGroups = UnitGroup::all();
+        $units = Unit::all();
         $inventories = Inventory::with('unitGroup')->get();
 
         return view('reservations.create', [
             'title' => 'Create Reservations',
             'guests' => $guests,
             'inventories' => $inventories,
-            'unitGroups' => $unitGroups,
+            'units' => $units,
             'step' => $step,
             'data' => $data
         ]);
@@ -145,7 +146,7 @@ class ReservationController extends Controller
         // Hitung jumlah hari antara arrival_date dan departure_date
         $arrivalDate = Carbon::parse($step1Data['arrival_date']);
         $departureDate = Carbon::parse($step1Data['departure_date']);
-        $numberOfNights = $arrivalDate->diffInDays($departureDate);
+        $numberOfNights = $arrivalDate->diffInDays($departureDate) + 1;
 
         $totalPrice = $numberOfNights * $roomRate;
 
@@ -197,8 +198,13 @@ class ReservationController extends Controller
     public function show($id)
     {
         $reservation = Reservation::findOrFail($id);
+        $booking = Booking::findOrFail($id);
 
-        return view('reservations.show', ['title' => $reservation->booker->guest->name, 'reservation' => $reservation]);
+        return view('reservations.show', [
+            'title' => $reservation->booker->guest->name,
+            'reservation' => $reservation,
+            'booking' => $booking
+        ]);
     }
 
     /**
@@ -361,11 +367,11 @@ class ReservationController extends Controller
     }
 
     public function restoreAll()
-{
-    // Kembalikan semua data reservasi yang di-soft delete
-    $restoredCount = Reservation::onlyTrashed()->restore();
+    {
+        // Kembalikan semua data reservasi yang di-soft delete
+        $restoredCount = Reservation::onlyTrashed()->restore();
 
-    // Redirect atau berikan respons sesuai kebutuhan aplikasi Anda
-    return redirect()->back()->with('success', "{$restoredCount} reservations restored successfully");
-}
+        // Redirect atau berikan respons sesuai kebutuhan aplikasi Anda
+        return redirect()->back()->with('success', "{$restoredCount} reservations restored successfully");
+    }
 }

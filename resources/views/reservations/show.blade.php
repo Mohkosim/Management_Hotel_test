@@ -31,7 +31,7 @@
     <h3 class="text-3xl font-bold dark:text-white px-4 lg:px-12">Detail Reservation</h3>
 
     <!-- Modal -->
-    {{-- <div id="paymentModal" class="fixed inset-0 z-10 overflow-y-auto bg-transparent bg-opacity-75 flex items-center justify-center">
+    <div id="paymentModal" class="fixed inset-0 z-10 overflow-y-auto bg-transparent bg-opacity-75 flex items-center justify-center hidden">
         <!-- Background overlay -->
         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
@@ -49,27 +49,28 @@
                             <!-- Payment form or information -->
                             <p>Insert payment form or payment details here.</p>
                         </div>
-                        <form action="/reservation" method="POST">
+                        <form action="{{ route('payments.store') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
                             <div class="sm:col-span-2 mt-4">
-                                <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
-    <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
-    <input type="text" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter amount" required>
+                                <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="text" name="amount" id="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter amount" required>
+                            </div>
+                            <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-amber-500 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                    Confirm Payment
+                                </button>
+                                <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:w-auto sm:text-sm">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-        <button type="submit" onclick="confirmPayment()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-amber-500 text-base font-medium text-white hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-3 sm:w-auto sm:text-sm">
-            Confirm Payment
-        </button>
-        <button type="button" onclick="closeModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:w-auto sm:text-sm">
-            Cancel
-        </button>
-    </div>
-    </form>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div> --}}
+
 
     {{-- Table --}}
     <section class="bg-white dark:bg-gray-900 py-8 px-4 ml-0 mr-auto max-w-2xl lg:py-8">
@@ -105,40 +106,49 @@
                         <div style="display: flex;">
                             <p style="width: 150px;"><strong>Booking date<p>:</p></strong></p>
                             <p style="margin-left: 5px;">
-                                @foreach($reservation->bookings as $booking)
+                                @foreach ($reservation->booking as $booking)
                                 {{ $booking->booking_date }}<br>
-                                @endforeach</td>
+                                @endforeach
+                                </td>
                             </p>
                         </div>
                         <div style="display: flex;">
                             <p style="width: 150px;"><strong>Total Price<p>:</p></strong></p>
                             <p style="margin-left: 5px;">Rp.
-                                @foreach($reservation->bookings as $booking)
+                                @foreach ($reservation->booking as $booking)
                                 {{ $booking->total_price }}<br>
-                                @endforeach</td>
+                                @endforeach
+                                </td>
                             </p>
                         </div>
-                        {{-- <div style="display: flex;">
+                        <div style="display: flex;">
                             <p style="width: 150px;"><strong>Status Pay<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">@foreach ($reservation->payments as $payment)
+                            <p style="margin-left: 5px;">
+                                @if ($booking->payments)
+                                @foreach ($booking->payments as $payment)
                                 <span>{{ $payment->status }}</span><br>
-                        @endforeach</p>
+                                @endforeach
+                                @else
+                                <span>No payment status available</span>
+                                @endif
+                            </p>
+                        </div>
+                        <div id="totalPrice-{{ $reservation->id }}" class="hidden" style="display: flex;">
+                            <p style="width: 150px;"><strong>Pay the Price<p>:</p></strong></p>
+                            <p style="margin-left: 5px;">
+                                @if ($booking->payments)
+                                @foreach ($booking->payments as $payment)
+                                <span>Rp. {{ $payment->amount }}</span>
+                                <br>
+                                @endforeach
+                                @else
+                                <span>No payment status available</span>
+                                @endif
+                            </p>
+                        </div>
                     </div>
-                    <div id="totalPrice-{{ $reservation->id }}" class="hidden" style="display: flex;">
-                        <p style="width: 150px;"><strong>Pay the Price<p>:</p></strong></p>
-                        <p style="margin-left: 5px;">
-                            @foreach ($reservation->payments as $payment)
-                            Rp. {{ $payment->amount }}
-                            @if ($payment->returns > 0)
-                            (Returns: Rp. {{ $payment->returns }})
-                            @endif
-                            <br>
-                            @endforeach
-                        </p>
-                    </div> --}}
-                </div>
-                {{-- <div>
-                        @if ($reservation->total_harga_room > $reservation->payments()->sum('amount'))
+                    <div>
+                        @if ($booking->total_price > $booking->payments()->sum('amount'))
                         <a href="#" id="paymentButton" onclick="showModal()" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-amber-500 focus:ring-primary-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
@@ -148,7 +158,7 @@
                         @endif
                     </div>
                     <div class="flex justify-end space-x-4">
-                        @if ($reservation->payments()->sum('amount') == 0)
+                        @if ($booking->payments()->sum('amount') == 0)
                         <!-- Show Invoice button -->
                         <a href="#" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-amber-500 hover:bg-amber-400 focus:ring-4 focus:ring-primary-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 h-3.5 w-3.5 mr-2">
@@ -165,9 +175,9 @@
                             Folios
                         </a>
                         @endif
-                    </div>  --}}
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     </section>
     <script>

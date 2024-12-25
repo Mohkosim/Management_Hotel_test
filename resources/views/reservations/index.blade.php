@@ -129,7 +129,7 @@
                                 <td class="border px-4 py-2">{{ $reservation->departure_date }}</td>
                                 <td class="border px-4 py-2">{{ $reservation->inventory->unitGroup->type }}</td>
                                 <td class="border px-4 py-2">
-                                    @foreach($reservation->bookings as $booking)
+                                    @foreach($reservation->booking as $booking)
                                     {{ $booking->booking_date }}<br>
                                     @endforeach</td>
                                 <td class="px-4 py-3 flex items-center">
