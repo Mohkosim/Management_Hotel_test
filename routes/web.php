@@ -9,11 +9,14 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\Invoice_FoliosController;
 use App\Http\Controllers\HouseKeepingController;
+use App\Http\Controllers\DashboardController;
 
 // Dashboard
-Route::get('/', function () {
-    return view('dashboard', ['title' => 'Dashboard']);
-});
+// Route::get('/', function () {
+//     return view('dashboard', ['title' => 'Dashboard']);
+// });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
 // Room
 Route::resource('/room/unit-groups', UnitGroupController::class);

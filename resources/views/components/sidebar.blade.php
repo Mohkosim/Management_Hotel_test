@@ -3,7 +3,7 @@
 
         <ul class="space-y-2">
             <li>
-                <x-sidebar-link href="/" :active="request()->is('/')">Dashboard</x-sidebar-link>
+                <x-sidebar-link href="/dashboard" :active="request()->is('/')">Dashboard</x-sidebar-link>
             </li>
 
             <li>

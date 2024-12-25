@@ -15,6 +15,15 @@ class UnitGroup extends Model
     use HasFactory;
     protected $fillable = ['type'];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->whereHas('guest', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+        });
+    }
+
     public function units(): HasMany
     {
         return $this->hasMany(Unit::class);
