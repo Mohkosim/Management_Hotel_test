@@ -70,11 +70,11 @@
         </div>
 
         <div class="mb-8">
-            <p class="font-bold">Ditujuakan Kepada: <span class="font-normal">{{ $reservation->booker->guest->name }}</span></p>
+            <p class="font-bold">Ditujuakan Kepada: <span class="font-normal">{{ $reservation->guest->name }}</span></p>
             <p class="font-bold">Booking Date: <span class="font-normal">@foreach ($reservation->booking as $booking)
                     {{ $booking->booking_date }}<br>
                     @endforeach</span></p>
-            <p class="font-bold">Alamat: <span class="font-normal">{{ $reservation->booker->guest->address }}</span></p>
+            <p class="font-bold">Alamat: <span class="font-normal">{{ $reservation->guest->address }}</span></p>
         </div>
         <p>Rincian Biaya :</p>
         <table class="w-full mb-8">
@@ -103,18 +103,24 @@
         </table>
 
         <div class="text-right">
-            <p class="font-bold">Status Pay: <span class="font-normal">
+            <p class="font-bold">Pay: <span class="font-normal">
                     @foreach ($reservation->booking as $booking)
                     <span>{{ $booking->payment->amount }}</span><br>
+                    @endforeach</span></p>
+        </div>
+        <div class="text-right">
+            <p class="font-bold">Status Pay: <span class="font-normal">
+                    @foreach ($reservation->booking as $booking)
+                    <span>{{ $booking->payment->status }}</span><br>
                     @endforeach</span></p>
         </div>
 
         <div>
             <p class="font-bold">Terimakasih</p>
-            <p>{{ $reservation->booker->guest->name }}</p>
-            <p>{{ $reservation->booker->guest->phone }}</p>
-            <p>{{ $reservation->booker->guest->address }}</p>
-            <p>{{ $reservation->booker->guest->email }}</p>
+            <p>{{ $reservation->guest->name }}</p>
+            <p>{{ $reservation->guest->phone }}</p>
+            <p>{{ $reservation->guest->address }}</p>
+            <p>{{ $reservation->guest->email }}</p>
             <br>
         </div>
 
@@ -128,7 +134,7 @@
             <div class="column right">
                 <p>Menyetujui</p>
                 <br><br><br><br>
-                <p><strong><u>{{ $reservation->booker->guest->name }}</u></strong></p>
+                <p><strong><u>{{ $reservation->guest->name }}</u></strong></p>
                 <p><em>Customer</em></p>
             </div>
         </div>

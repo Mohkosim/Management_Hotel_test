@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('bookers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('guest_id')->constrained(
-                table: 'guests',
-                indexName: 'bookers_guests_id'
-            )->onDelete('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone');
@@ -25,6 +21,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('postal_code');
             $table->string('place_of_birth');
+            $table->string('random_id')->unique()->nullable();
             $table->timestamps();
         });
     }

@@ -73,81 +73,110 @@
 
 
     {{-- Table --}}
-    <section class="bg-white dark:bg-gray-900 py-8 px-4 ml-0 mr-auto max-w-2xl lg:py-8">
+    <section class="bg-white dark:bg-gray-900 py-8 px-4 ml-0 mr-auto lg:py-8">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
             <!-- Start coding here -->
             <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
                 <div class="md:flex-row space-y-3 md:space-y-0 p-4">
                     <div class="mb-6" id="reservation-{{ $reservation->id }}" style="display: flex; flex-direction: column;">
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Name<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->booker->guest->name }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Booker<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->booker->name }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Arrival date<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->arrival_date }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Departure date<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->departure_date }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Room number<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->inventory->unit->name }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Room type<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">{{ $reservation->inventory->unitGroup->type }}</p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Booking date<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">
-                                @foreach ($reservation->booking as $booking)
-                                {{ $booking->booking_date }}<br>
-                                @endforeach
-                                </td>
-                            </p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Total Price<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">Rp.
-                                @foreach ($reservation->booking as $booking)
-                                {{ $booking->total_price }}<br>
-                                @endforeach
-                                </td>
-                            </p>
-                        </div>
-                        <div style="display: flex;">
-                            <p style="width: 150px;"><strong>Status Pay<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">
-                                @if ($booking->payments)
-                                @foreach ($booking->payments as $payment)
-                                <span>{{ $payment->status }}</span><br>
-                                @endforeach
-                                @else
-                                <span>No payment status available</span>
-                                @endif
-                            </p>
-                        </div>
-                        <div id="totalPrice-{{ $reservation->id }}" class="hidden" style="display: flex;">
-                            <p style="width: 150px;"><strong>Pay the Price<p>:</p></strong></p>
-                            <p style="margin-left: 5px;">
-                                @if ($booking->payments)
-                                @foreach ($booking->payments as $payment)
-                                <span>Rp. {{ $payment->amount }}</span>
-                                <br>
-                                @endforeach
-                                @else
-                                <span>No payment status available</span>
-                                @endif
-                            </p>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="flex: 1; margin-right: 20px;">
+                                <h3 class="text-3xl dark:text-white">Reservations Detail</h3><br>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Name<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->guest->name }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Arrival date<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->arrival_date }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Departure date<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->departure_date }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Room number<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->inventory->unit->name }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Room type<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->inventory->unitGroup->type }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Booking date<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">
+                                        @foreach ($reservation->booking as $booking)
+                                        {{ $booking->booking_date }}<br>
+                                        @endforeach
+                                    </p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Total Price<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">Rp.
+                                        @foreach ($reservation->booking as $booking)
+                                        {{ $booking->total_price }}<br>
+                                        @endforeach
+                                    </p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Status Pay<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">
+                                        @if ($booking->payments)
+                                        @foreach ($booking->payments as $payment)
+                                        <span>{{ $payment->status }}</span><br>
+                                        @endforeach
+                                        @else
+                                        <span>No payment status available</span>
+                                        @endif
+                                    </p>
+                                </div>
+                                <div id="totalPrice-{{ $reservation->id }}" class="hidden" style="display: flex;">
+                                    <p style="width: 150px;"><strong>Pay the Price<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">
+                                        @if ($booking->payments)
+                                        @foreach ($booking->payments as $payment)
+                                        <span>Rp. {{ $payment->amount }}</span><br>
+                                        @endforeach
+                                        @else
+                                        <span>No payment status available</span>
+                                        @endif
+                                    </p>
+                                </div><br>
+                            </div>
+
+                            <div style="flex: 1;">
+                                <h3 class="text-3xl dark:text-white">Bookings Information</h3><br>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>ID<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->guest->booker->random_id }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Booker<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->guest->booker->name }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Email<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->guest->booker->email }}</p>
+                                </div>
+                                <div style="display: flex;">
+                                    <p style="width: 150px;"><strong>Phone<p>:</p></strong></p>
+                                    <p style="margin-left: 5px;">{{ $reservation->guest->booker->phone }}</p>
+                                </div>
+                                <div>
+                                    <a href="/bookings/{{ $reservation->guest->booker->id }}" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-amber-500 focus:ring-primary-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                        <svg class="w-6 h-6 text-amber-500 dark:text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778" />
+                                        </svg>
+                                        Jump to booking
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div>
+
+                        <h3 class="text-3xl dark:text-white">Reservations Payment</h3>
+
                         @if ($booking->total_price > $booking->payments()->sum('amount'))
                         <a href="#" id="paymentButton" onclick="showModal()" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-amber-500 focus:ring-primary-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -157,7 +186,7 @@
                         </a>
                         @endif
                     </div>
-                    <div class="flex justify-end space-x-4">
+                    <div class="flex space-x-4">
                         @if ($booking->payments()->sum('amount') == 0)
                         <!-- Show Invoice button -->
                         <a href="#" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-amber-500 hover:bg-amber-400 focus:ring-4 focus:ring-primary-300 rounded-lg dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
@@ -177,6 +206,7 @@
                         @endif
                     </div>
                 </div>
+
             </div>
         </div>
     </section>

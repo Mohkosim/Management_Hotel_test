@@ -10,6 +10,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\Invoice_FoliosController;
 use App\Http\Controllers\HouseKeepingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BookingController;
 
 // Dashboard
 // Route::get('/', function () {
@@ -46,6 +47,18 @@ Route::post('/reservations/step4', [ReservationController::class, 'postStep4'])-
 
 
 Route::post('/payments/store', [PaymentController::class, 'store'])->name('payments.store');
+
+
+
+Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+Route::get('/bookings/{id}', [BookingController::class, 'show'])->name('bookings.show');
+Route::put('/bookings/{id}', [BookingController::class, 'update'])->name('bookers.update');
+
+Route::get('/bookings/create/{step?}', [BookingController::class, 'create'])->name('bookings.create');
+Route::post('/bookings/step1/{bookerId}', [BookingController::class, 'postStep1'])->name('bookings.postStep1');
+Route::post('/bookings/step2/{bookerId}', [BookingController::class, 'postStep2'])->name('bookings.postStep2');
+Route::post('/bookings/step3/{bookerId}', [BookingController::class, 'postStep3'])->name('bookings.postStep3');
+
 
 
 // Housekeeping

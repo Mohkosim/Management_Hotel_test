@@ -8,6 +8,7 @@
         "php": "^8.2",
         "arielmejiadev/larapex-charts": "^2.1",
         "barryvdh/laravel-dompdf": "^3.0",
+        "dompdf/dompdf": "^3.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9"
     },

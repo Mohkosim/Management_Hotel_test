@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Reservation extends Model
 {
@@ -26,6 +27,13 @@ class Reservation extends Model
                 $query->where('name', 'like', '%' . $search . '%');
             });
         });
+    }
+
+    public static function generateRandomId($reservationId)
+    {
+        // Generate a random string of 8 characters
+        $randomString = Str::random(8);
+        return strtoupper($randomString) . '-' . $reservationId;
     }
 
     public function booker(): BelongsTo

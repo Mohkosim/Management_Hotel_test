@@ -164,7 +164,7 @@
                                 <tr class="border-b dark:border-gray-700">
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $reservation->booker->guest->name }}
+                                        {{ $reservation->guest->name }}
                                     </th>
                                     <td class="border px-4 py-2">{{ $reservation->arrival_date }}</td>
                                     <td class="border px-4 py-2">{{ $reservation->departure_date }}</td>

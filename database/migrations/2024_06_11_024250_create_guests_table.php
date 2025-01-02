@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('booker_id')->constrained(
+                table: 'bookers',
+                indexName: 'guests_bookers_id'
+            )->onDelete('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone');

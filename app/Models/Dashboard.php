@@ -19,18 +19,18 @@ class Dashboard extends Model
         for ($i = 1; $i <= $bulan; $i++) {
             $totalRevenue = Reservation::whereYear('arrival_date', $tahun)
                 ->whereMonth('arrival_date', $i)
-                ->with(['booking.payment']) // Eager load the payments relationship
+                ->with(['booking.payments'])
                 ->get()
                 ->sum(function ($reservation) {
                     return $reservation->booking->sum(function ($booking) {
-                        return $booking->payments->sum('amount'); // Sum the amount from payments
+                        return $booking->payments->sum('amount');
                     });
                 });
 
-            $totalDataRevenue[] = $totalRevenue; // Store the total revenue for the month
+            $totalDataRevenue[] = $totalRevenue;
         }
 
-        return $totalDataRevenue; // Return the array of total revenues
+        return $totalDataRevenue;
     }
 
     public static function NewCustomer()

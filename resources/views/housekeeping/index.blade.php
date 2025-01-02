@@ -59,7 +59,7 @@
     <section class="bg-white dark:bg-gray-900 sm:p-0">
         <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 p-3">
             {{-- Reservation --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4">
+            {{--  <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4">
                 <header class="flex justify-center mb-4">
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Reservations with assigned units</span>
                 </header>
@@ -77,11 +77,11 @@
                         <p class="text-sm text-gray-500">Stay-th</p>
                     </div>
                 </div>
-            </div>
+            </div>  --}}
 
 
             {{-- Occupied --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
+            {{--  <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
                 <header class="flex justify-center mb-4">
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Occupied units</span>
                 </header>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div>  --}}
 
             {{-- Free Units --}}
             <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
@@ -124,7 +124,7 @@
             </div>
 
             {{-- Maintenances --}}
-            <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
+            {{--  <div class="bg-white shadow-md border-gray-300 rounded-lg dark:border-gray-600 p-4 h-32 md:h-64">
                 <header class="flex justify-center mb-4">
 
                     <span class="flex initial ml-2 w-64 text-lg font-medium">Maintenances</span>
@@ -143,7 +143,7 @@
                         <p class="text-sm text-gray-500">None</p>
                     </div>
                 </div>
-            </div>
+            </div>  --}}
         </div>
 
         {{-- table --}}
@@ -290,7 +290,7 @@
             </div>
 
             <h4 class="text-base font-semibold leading-6 text-gray-950 dark:text-white">
-                No reservations
+                No housekeeping
             </h4>
         </div>
         @endif

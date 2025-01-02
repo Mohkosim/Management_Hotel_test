@@ -17,12 +17,13 @@ return new class extends Migration
                 table: 'inventories',
                 indexName: 'reservations_inventories_id'
             )->onDelete('cascade');
-            $table->foreignId('booker_id')->constrained(
-                table: 'bookers',
-                indexName: 'reservations_bookers_id'
+            $table->foreignId('guest_id')->constrained(
+                table: 'guests',
+                indexName: 'reservations_guests_id'
             )->onDelete('cascade');
             $table->date('arrival_date');
             $table->date('departure_date');
+            $table->string('random_id')->unique()->nullable();
             $table->timestamps();
         });
     }

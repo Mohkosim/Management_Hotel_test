@@ -82,7 +82,7 @@ class ReservationController extends Controller
         ]);
 
 
-        session(['step2' => $request->only('name', 'email', 'phone', 'date_of_birth', 'gender', 'address', 'postal_code', 'place_of_birth')]);
+        session(['step2' => $request->only('booker_id', 'name', 'email', 'phone', 'date_of_birth', 'gender', 'address', 'postal_code', 'place_of_birth')]);
         //dd(session());
         return redirect()->route('reservations.create', ['step' => 3]);
     }
@@ -100,7 +100,7 @@ class ReservationController extends Controller
             'place_of_birth' => 'required',
         ]);
 
-        session(['step3' => $request->only('guest_id', 'name', 'email', 'phone', 'date_of_birth', 'gender', 'address', 'postal_code', 'place_of_birth')]);
+        session(['step3' => $request->only('name', 'email', 'phone', 'date_of_birth', 'gender', 'address', 'postal_code', 'place_of_birth')]);
         // dd(session());
         return redirect()->route('reservations.create', ['step' => 4]);
     }
@@ -114,22 +114,8 @@ class ReservationController extends Controller
 
         // dd($step1Data, $step2Data, $step3Data);
 
-        // Create Guest
-        $guest = Guest::create([
-            'name' => $step2Data['name'],
-            'email' => $step2Data['email'],
-            'phone' => $step2Data['phone'],
-            'date_of_birth' => $step2Data['date_of_birth'],
-            'gender' => $step2Data['gender'],
-            'address' => $step2Data['address'],
-            'postal_code' => $step2Data['postal_code'],
-            'place_of_birth' => $step2Data['place_of_birth'],
-        ]);
-
-
         // Create Booker
         $booker = Booker::create([
-            'guest_id' => $guest->id,
             'name' => $step3Data['name'],
             'email' => $step3Data['email'],
             'phone' => $step3Data['phone'],
@@ -138,6 +124,25 @@ class ReservationController extends Controller
             'address' => $step3Data['address'],
             'postal_code' => $step3Data['postal_code'],
             'place_of_birth' => $step3Data['place_of_birth'],
+        ]);
+
+        // Generate random_id after the booker has been created
+        $randomId = Booker::generateRandomId($booker->id);
+
+        // Update the booker with the random_id
+        $booker->update(['random_id' => $randomId]);
+
+        // Create Guest
+        $guest = Guest::create([
+            'booker_id' => $booker->id,
+            'name' => $step2Data['name'],
+            'email' => $step2Data['email'],
+            'phone' => $step2Data['phone'],
+            'date_of_birth' => $step2Data['date_of_birth'],
+            'gender' => $step2Data['gender'],
+            'address' => $step2Data['address'],
+            'postal_code' => $step2Data['postal_code'],
+            'place_of_birth' => $step2Data['place_of_birth'],
         ]);
 
         $inventory = Inventory::find($step1Data['inventory_id']);
@@ -152,12 +157,15 @@ class ReservationController extends Controller
 
         // Create Reservation
         $reservation = Reservation::create([
-            'booker_id' => $booker->id,
+            'guest_id' => $guest->id,
             'inventory_id' => $step1Data['inventory_id'],
             'arrival_date' => $step1Data['arrival_date'],
             'departure_date' => $step1Data['departure_date'],
         ]);
 
+        $randomId = Reservation::generateRandomId($reservation->id);
+
+        $reservation->update(['random_id' => $randomId]);
 
         // Create Booking
         Booking::create([
@@ -170,7 +178,7 @@ class ReservationController extends Controller
         session()->forget(['step1', 'step2', 'step3']);
         // dd(session());
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation has been created successfully.');
+        return redirect()->route('bookings.show', ['id' => $booker->id])->with('success', 'Reservation has been created successfully.');
     }
 
     /**
@@ -201,7 +209,7 @@ class ReservationController extends Controller
         $booking = Booking::findOrFail($id);
 
         return view('reservations.show', [
-            'title' => $reservation->booker->guest->name,
+            'title' => $reservation->guest->name,
             'reservation' => $reservation,
             'booking' => $booking
         ]);
