@@ -73,50 +73,6 @@
     {{-- Table --}}
     <section class="bg-white dark:bg-gray-900 sm:p-0">
         <div class="grid grid-cols-1 gap-4 p-3 mt-3 mb-4 sm:grid-cols-2 lg:grid-cols-4">
-            {{-- Reservation --}}
-            {{--  <div class="p-4 bg-white border-gray-300 rounded-lg shadow-md dark:border-gray-600">
-                <header class="flex justify-center mb-4">
-                    <span class="flex w-64 ml-2 text-lg font-medium initial">Reservations with assigned units</span>
-                </header>
-                <div class="grid grid-cols-3 text-center">
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Departing</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Arriving</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Stay-th</p>
-                    </div>
-                </div>
-            </div>  --}}
-
-
-            {{-- Occupied --}}
-            {{--  <div class="h-32 p-4 bg-white border-gray-300 rounded-lg shadow-md dark:border-gray-600 md:h-64">
-                <header class="flex justify-center mb-4">
-                    <span class="flex w-64 ml-2 text-lg font-medium initial">Occupied units</span>
-                </header>
-                <div class="grid grid-cols-3 text-center mt-11 ">
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Dirty</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Inspect</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Clean</p>
-                    </div>
-                </div>
-
-            </div>  --}}
-
             {{-- Free Units --}}
             <div class="h-32 p-4 bg-white border-gray-300 rounded-lg shadow-md dark:border-gray-600 md:h-64">
                 <header class="flex justify-center mb-4">
@@ -137,28 +93,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Maintenances --}}
-            {{--  <div class="h-32 p-4 bg-white border-gray-300 rounded-lg shadow-md dark:border-gray-600 md:h-64">
-                <header class="flex justify-center mb-4">
-
-                    <span class="flex w-64 ml-2 text-lg font-medium initial">Maintenances</span>
-                </header>
-                <div class="grid grid-cols-3 text-center mt-11">
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Out Of Services</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">Out Of Order Units</p>
-                    </div>
-                    <div>
-                        <span class="text-3xl font-bold text-gray-900">0</span>
-                        <p class="text-sm text-gray-500">None</p>
-                    </div>
-                </div>
-            </div>  --}}
         </div>
 
         {{-- table --}}
@@ -292,13 +226,16 @@
             aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                 Showing
-                <span class="font-semibold text-gray-900 dark:text-white">1 to 5</span>
+                <span class="font-semibold text-gray-900 dark:text-white">
+                    {{ $housekeepings->firstItem() }} to {{ $housekeepings->lastItem() }}
+                </span>
                 of
-                <span class="font-semibold text-gray-900 dark:text-white">20</span>
+                <span class="font-semibold text-gray-900 dark:text-white">{{ $housekeepings->total() }}</span>
             </span>
             <ul class="inline-flex items-stretch -space-x-px">
+                {{-- Previous Page Link --}}
                 <li>
-                    <a href="#"
+                    <a href="{{ $housekeepings->previousPageUrl() }}"
                         class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Previous</span>
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -309,28 +246,21 @@
                         </svg>
                     </a>
                 </li>
+
+                {{-- Page Number Links --}}
+                @foreach ($housekeepings->getUrlRange(1, $housekeepings->lastPage()) as $page => $url)
+                    <li>
+                        <a href="{{ $url }}"
+                            class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white
+                            @if ($page == $housekeepings->currentPage()) bg-primary-50 border-primary-300 text-primary-600 dark:bg-gray-700 dark:text-white @endif">
+                            {{ $page }}
+                        </a>
+                    </li>
+                @endforeach
+
+                {{-- Next Page Link --}}
                 <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                </li>
-                <li>
-                    <a href="#" aria-current="page"
-                        class="z-10 flex items-center justify-center px-3 py-2 text-sm leading-tight border text-primary-600 bg-primary-50 border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center justify-center px-3 py-2 text-sm leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                </li>
-                <li>
-                    <a href="#"
+                    <a href="{{ $housekeepings->nextPageUrl() }}"
                         class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Next</span>
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"

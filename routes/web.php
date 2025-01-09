@@ -19,7 +19,7 @@ use App\Http\Controllers\BookingController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Room 
+// Room
 Route::resource('/room/unit-groups', UnitGroupController::class);
 Route::resource('/room/units', UnitController::class);
 Route::get('/rate-plans/{unitGroupId}', [UnitController::class, 'getRatePlansByRoomType']);
@@ -59,13 +59,7 @@ Route::post('/bookings/step1/{bookerId}', [BookingController::class, 'postStep1'
 Route::post('/bookings/step2/{bookerId}', [BookingController::class, 'postStep2'])->name('bookings.postStep2');
 Route::post('/bookings/step3/{bookerId}', [BookingController::class, 'postStep3'])->name('bookings.postStep3');
 
-
-
-// Housekeeping
-// Route::get('/housekeeping', function () {
-//     return view('housekeeping.index', ['title' => 'Housekeeping']);
-// });
-
+// housekeeping
 Route::get('/housekeeping', [HouseKeepingController::class, 'index'])->name('housekeeping.index');
 Route::post('/housekeeping/update-status/{id}', [HouseKeepingController::class, 'updateStatus'])->name('housekeeping.updateStatus');
 Route::get('/housekeeping/units', [HouseKeepingController::class, 'getUnitData'])->name('housekeeping.getUnitData');

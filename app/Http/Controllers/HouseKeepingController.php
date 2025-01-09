@@ -14,7 +14,7 @@ class HouseKeepingController extends Controller
 
     public function index()
     {
-        $housekeepings = HouseKeeping::all();
+        $housekeepings = HouseKeeping::paginate(3);
         $inventories = Inventory::with('unit', 'unitgroup')->get();
 
         // Menghitung status unit
@@ -49,19 +49,6 @@ class HouseKeepingController extends Controller
 
         return redirect()->route('housekeeping.index')->with('success', 'Status kamar berhasil diperbarui.');
     }
-
-
-    // public function getUnitData()
-    // {
-    //     $units = Unit::all();
-    //     return response()->json($units);
-    // }
-
-    // public function getUnitGroup()
-    // {
-    //     $unitGroups = UnitGroup::all();
-    //     return response()->json($unitGroups);
-    // }
 
     public function searchData(Request $request)
     {
