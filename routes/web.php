@@ -19,7 +19,7 @@ use App\Http\Controllers\BookingController;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Room
+// Room 
 Route::resource('/room/unit-groups', UnitGroupController::class);
 Route::resource('/room/units', UnitController::class);
 Route::get('/rate-plans/{unitGroupId}', [UnitController::class, 'getRatePlansByRoomType']);
