@@ -1,1 +1,1 @@
-## Hotel Jinggo Poliwangi Adalah
+## Hotel Jinggo Poliwangi
